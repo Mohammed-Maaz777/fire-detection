@@ -11,8 +11,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'yolov5'))
 # Import YOLOv5 model loader
 from yolov5.models.experimental import attempt_load
 
-# Define model path and load model
-model_path = 'yolov5/weights/best.pt'
+# Define correct model path and load model
+model_path = os.path.join("yolov5", "runs", "train", "fire-detection10", "weights", "best.pt")
 model = attempt_load(model_path, map_location=torch.device('cpu'))
 model.eval()
 
