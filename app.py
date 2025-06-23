@@ -3,7 +3,8 @@ import torch
 from PIL import Image
 import os
 
-model = torch.hub.load('yolov5', 'custom', path='yolov5/runs/train/fire-detection10/weights/best.pt', source='local')
+from yolov5.models.experimental import attempt_load
+model = attempt_load('yolov5/runs/train/fire-detection10/weights/best.pt', map_location='cpu')
 
 st.title("🔥 Fire Detection App")
 uploaded_file = st.file_uploader("Upload an image", type=['jpg', 'jpeg', 'png'])
