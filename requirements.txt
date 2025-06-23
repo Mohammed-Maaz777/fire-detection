@@ -1,8 +1,5 @@
 streamlit
 torch
-Pillow
-torchvision
+numpy
 opencv-python
-opencv-python-headless 
-ultralytics 
-seaborn 
+Pillow

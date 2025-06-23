@@ -12,6 +12,8 @@ from collections import OrderedDict, namedtuple
 from copy import copy
 from pathlib import Path
 from urllib.parse import urlparse
+from utils.general import check_suffix
+
 
 import cv2
 import numpy as np
@@ -35,26 +37,18 @@ except (ImportError, AssertionError):
 
 from ultralytics.utils.plotting import Annotator, colors, save_one_box
 
-from utils import TryExcept
-from utils.dataloaders import exif_transpose, letterbox
-from utils.general import (
-    LOGGER,
-    ROOT,
-    Profile,
-    check_requirements,
-    check_suffix,
-    check_version,
-    colorstr,
-    increment_path,
-    is_jupyter,
-    make_divisible,
-    non_max_suppression,
-    scale_boxes,
-    xywh2xyxy,
-    xyxy2xywh,
-    yaml_load,
+from yolov5.utils import TryExcept
+
+from yolov5.utils.dataloaders import exif_transpose, letterbox
+
+from yolov5.utils.general import (
+    LOGGER, check_version, make_divisible, increment_path,
+    is_ascii, is_chinese, clean_str, colorstr, print_args,
+    one_cycle, emojis, set_logging, get_default_args
 )
-from utils.torch_utils import copy_attr, smart_inference_mode
+
+from yolov5.utils.torch_utils import copy_attr, smart_inference_mode
+
 
 
 def autopad(k, p=None, d=1):
