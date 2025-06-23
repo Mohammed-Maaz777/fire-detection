@@ -9,8 +9,10 @@ import torchvision.transforms as T
 
 from yolov5.models.experimental import attempt_load
 
-# Load model using absolute path
-model_path = os.path.join(os.path.dirname(__file__), 'yolov5', 'weights', 'best.pt')
+# ✅ Define the model path first
+model_path = 'yolov5/weights/best.pt'
+
+# Load model
 model = attempt_load(model_path, map_location='cpu')
 model.eval()
 
@@ -27,6 +29,4 @@ if uploaded_file is not None:
 
     with st.spinner("Detecting fire..."):
         results = model(img_tensor)[0]
-        
-        # Dummy logic – replace with custom thresholding or class detection
-        st.warning("⚠️ Fire detection results generated. (Add logic to check if fire is actually detected)")
+        st.warning("⚠️ Fire detection results generated. (Add custom logic to check for fire)")
