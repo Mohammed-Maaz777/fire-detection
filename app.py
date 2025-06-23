@@ -12,9 +12,11 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'yolov5'))
 from yolov5.models.experimental import attempt_load
 
 # Define correct model path and load model
+# Define correct model path and load model
 model_path = os.path.join("yolov5", "runs", "train", "fire-detection10", "weights", "best.pt")
-model = attempt_load(model_path, map_location=torch.device('cpu'))
+model = attempt_load(model_path)  # Removed map_location
 model.eval()
+
 
 # Streamlit UI
 st.title("🔥 Fire Detection App")
