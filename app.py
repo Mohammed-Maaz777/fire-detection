@@ -1,25 +1,26 @@
 import streamlit as st
-import torch
-from PIL import Image
-import numpy as np
-import tempfile
 import os
-import subprocess
+import tempfile
 
 st.title("🔥 Fire Detection App")
+st.markdown("Upload a video and detect fire using a YOLOv5 model.")
 
-uploaded_file = st.file_uploader("Upload a video", type=["mp4", "mov", "avi"])
+uploaded_file = st.file_uploader("Upload a video", type=["mp4", "avi", "mov"])
 
 if uploaded_file is not None:
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as tmp:
-        tmp.write(uploaded_file.read())
-        tmp_path = tmp.name
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp_input:
+        tmp_input.write(uploaded_file.read())
+        input_path = tmp_input.name
 
-    st.video(tmp_path)
+    st.video(input_path)
 
     if st.button("Detect Fire"):
         with st.spinner("Running fire detection..."):
-            result_path = "output.mp4"
-            os.system(f"python detect_fire.py --source {tmp_path} --output {result_path}")
-            st.success("Detection complete!")
-            st.video(result_path)
+            output_path = os.path.join(tempfile.gettempdir(), "output_fire.mp4")
+            os.system(f"python detect_fire.py --source \"{input_path}\" --output \"{output_path}\"")
+
+            if os.path.exists(output_path) and os.path.getsize(output_path) > 0:
+                st.success("Fire detection complete!")
+                st.video(output_path)
+            else:
+                st.error("Detection failed or no fire detected.")
