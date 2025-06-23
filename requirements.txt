@@ -4,3 +4,4 @@ Pillow
 torchvision
 opencv-python
 opencv-python-headless 
+ultralytics 
