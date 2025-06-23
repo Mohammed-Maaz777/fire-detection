@@ -17,9 +17,15 @@ import torch
 from PIL import Image, ImageDraw
 from scipy.ndimage.filters import gaussian_filter1d
 from ultralytics.utils.plotting import Annotator
+from utils.common import LOGGER, clip_boxes, increment_path, xywh2xyxy, xyxy2xywh
+
+
 
 from utils import TryExcept, threaded
-from utils.general import LOGGER, clip_boxes, increment_path, xywh2xyxy, xyxy2xywh
+# move LOGGER to the bottom to avoid circular import
+# Delayed import to avoid circular import
+
+
 from utils.metrics import fitness
 
 # Settings
@@ -515,3 +521,5 @@ def save_one_box(xyxy, im, file=Path("im.jpg"), gain=1.02, pad=10, square=False,
         # cv2.imwrite(f, crop)  # save BGR, https://github.com/ultralytics/yolov5/issues/7007 chroma subsampling issue
         Image.fromarray(crop[..., ::-1]).save(f, quality=95, subsampling=0)  # save RGB
     return crop
+   # Late import to resolve circular dependency
+

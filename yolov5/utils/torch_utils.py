@@ -17,7 +17,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-from yolov5.utils.general import LOGGER, check_version, colorstr, file_date, git_describe
+import logging
+LOGGER = logging.getLogger(__name__)
+
+import utils.general as gen
+
+
+
 
 
 LOCAL_RANK = int(os.getenv("LOCAL_RANK", -1))  # https://pytorch.org/docs/stable/elastic/run.html
@@ -34,7 +40,10 @@ warnings.filterwarnings("ignore", message="User provided device_type of 'cuda', 
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
-def smart_inference_mode(torch_1_9=check_version(torch.__version__, "1.9.0")):
+def smart_inference_mode(torch_1_9=None):
+    if torch_1_9 is None:
+        torch_1_9 = gen.check_version(torch.__version__, "1.9.0")
+
     """Applies torch.inference_mode() if torch>=1.9.0, else torch.no_grad() as a decorator for functions."""
 
     def decorate(fn):

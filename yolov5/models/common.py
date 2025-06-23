@@ -37,17 +37,19 @@ except (ImportError, AssertionError):
 
 from ultralytics.utils.plotting import Annotator, colors, save_one_box
 
-from yolov5.utils import TryExcept
+from utils.common import TryExcept
 
-from yolov5.utils.dataloaders import exif_transpose, letterbox
 
-from yolov5.utils.general import (
+from utils.dataloaders import exif_transpose, letterbox
+
+
+from utils.general import (
     LOGGER, check_version, make_divisible, increment_path,
     is_ascii, is_chinese, clean_str, colorstr, print_args,
     one_cycle, emojis, set_logging, get_default_args
 )
 
-from yolov5.utils.torch_utils import copy_attr, smart_inference_mode
+from utils.torch_utils import copy_attr, smart_inference_mode
 
 
 

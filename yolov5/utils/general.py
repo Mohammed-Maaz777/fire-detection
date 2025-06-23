@@ -33,6 +33,19 @@ import pkg_resources as pkg
 import torch
 import torchvision
 import yaml
+import logging
+LOGGER = logging.getLogger(__name__)
+# Define TryExcept decorator if not imported
+def TryExcept(msg=""):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                print(f"{msg}\n{e}")
+        return wrapper
+    return decorator
+
 
 # Import 'ultralytics' package or install if missing
 try:
@@ -45,11 +58,13 @@ except (ImportError, AssertionError):
 
 from ultralytics.utils.checks import check_requirements
 
-from yolov5.utils import TryExcept, emojis
 
-from yolov5.utils.downloads import curl_download, gsutil_getsize
 
-from yolov5.utils.metrics import box_iou, fitness
+from utils.downloads import curl_download, gsutil_getsize
+from utils.metrics import box_iou, fitness
+from utils.plots import colors
+from utils.torch_utils import select_device
+
 
 
 FILE = Path(__file__).resolve()
@@ -903,7 +918,8 @@ def xywhn2xyxy(x, w=640, h=640, padw=0, padh=0):
     return y
 
 
-def xyxy2xywhn(x, w=640, h=640, clip=False, eps=0.0):
+def n(x, w=640, h=640, clip=False, eps=0.0):
+
     """Convert nx4 boxes from [x1, y1, x2, y2] to [x, y, w, h] normalized where xy1=top-left, xy2=bottom-right."""
     if clip:
         clip_boxes(x, (h - eps, w - eps))  # warning: inplace clip
@@ -933,6 +949,8 @@ def segment2box(segment, width=640, height=640):
     ) = x[inside], y[inside]
     return np.array([x.min(), y.min(), x.max(), y.max()]) if any(x) else np.zeros((1, 4))  # xyxy
 
+def xyxy2xywh(x):
+    ...
 
 def segments2boxes(segments):
     """Convert segment labels to box labels, i.e. (cls, xy1, xy2, ...) to (cls, xywh)."""
@@ -1292,5 +1310,35 @@ def imshow(path, im):
 
 if Path(inspect.stack()[0].filename).parent.parent.as_posix() in inspect.stack()[-1].filename:
     cv2.imread, cv2.imwrite, cv2.imshow = imread, imwrite, imshow  # redefine
+    
+
 
 # Variables ------------------------------------------------------------------------------------------------------------
+def xyxy2xywhn(x, w=640, h=640, clip=False, eps=0.0):
+    """
+    Convert bounding boxes from [x1, y1, x2, y2] to normalized [x, y, w, h] format.
+
+    Args:
+        x: Boxes in format [x1, y1, x2, y2]
+        w: Image width
+        h: Image height
+        clip: If True, clip boxes to image bounds
+        eps: Small epsilon to avoid division by zero
+
+    Returns:
+        Boxes in normalized [x_center, y_center, width, height] format
+    """
+    y = x.clone() if isinstance(x, torch.Tensor) else np.copy(x)
+    if clip:
+        y[..., 0] = np.clip(y[..., 0], 0, w)  # x1
+        y[..., 1] = np.clip(y[..., 1], 0, h)  # y1
+        y[..., 2] = np.clip(y[..., 2], 0, w)  # x2
+        y[..., 3] = np.clip(y[..., 3], 0, h)  # y2
+    y[..., 0] = ((x[..., 0] + x[..., 2]) / 2) / (w + eps)  # x center
+    y[..., 1] = ((x[..., 1] + x[..., 3]) / 2) / (h + eps)  # y center
+    y[..., 2] = (x[..., 2] - x[..., 0]) / (w + eps)        # width
+    y[..., 3] = (x[..., 3] - x[..., 1]) / (h + eps)        # height
+    return y
+def emojis(string=''):
+    # Dummy function to pass emoji calls without error
+    return string

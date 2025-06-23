@@ -26,7 +26,8 @@ from PIL import ExifTags, Image, ImageOps
 from torch.utils.data import DataLoader, Dataset, dataloader, distributed
 from tqdm import tqdm
 
-from yolov5.utils.augmentations import (
+from utils.augmentations import (
+
 
     Albumentations,
     augment_hsv,
@@ -37,7 +38,7 @@ from yolov5.utils.augmentations import (
     mixup,
     random_perspective,
 )
-from yolov5.utils.general import (
+from utils.general import (
     DATASETS_DIR,
     LOGGER,
     NUM_THREADS,
@@ -56,7 +57,7 @@ from yolov5.utils.general import (
     xywhn2xyxy,
     xyxy2xywhn,
 )
-from yolov5.utils.torch_utils import torch_distributed_zero_first
+from utils.torch_utils import torch_distributed_zero_first
 
 # Parameters
 HELP_URL = "See https://docs.ultralytics.com/yolov5/tutorials/train_custom_data"

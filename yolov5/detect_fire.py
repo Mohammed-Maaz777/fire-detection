@@ -5,7 +5,9 @@ import torch
 import numpy as np
 import importlib.util
 from pathlib import Path
-from yolov5.utils.general import non_max_suppression
+from utils.general import non_max_suppression
+
+
 
 # Set root directory to yolov5
 ROOT = Path(__file__).resolve().parent

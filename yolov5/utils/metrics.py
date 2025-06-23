@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
-from yolov5.utils import TryExcept, threaded
+
+
 
 
 
@@ -191,7 +192,7 @@ class ConfusionMatrix:
         # fn = self.matrix.sum(0) - tp  # false negatives (missed detections)
         return tp[:-1], fp[:-1]  # remove background class
 
-    @TryExcept("WARNING ⚠️ ConfusionMatrix plot failure")
+    #@TryExcept("WARNING ⚠️ ConfusionMatrix plot failure")
     def plot(self, normalize=True, save_dir="", names=()):
         """Plots confusion matrix using seaborn, optional normalization; can save plot to specified directory."""
         import seaborn as sn
@@ -336,7 +337,7 @@ def wh_iou(wh1, wh2, eps=1e-7):
 # Plots ----------------------------------------------------------------------------------------------------------------
 
 
-@threaded
+#@threaded
 def plot_pr_curve(px, py, ap, save_dir=Path("pr_curve.png"), names=()):
     """Plots precision-recall curve, optionally per class, saving to `save_dir`; `px`, `py` are lists, `ap` is Nx2
     array, `names` optional.
@@ -361,7 +362,7 @@ def plot_pr_curve(px, py, ap, save_dir=Path("pr_curve.png"), names=()):
     plt.close(fig)
 
 
-@threaded
+#@threaded
 def plot_mc_curve(px, py, save_dir=Path("mc_curve.png"), names=(), xlabel="Confidence", ylabel="Metric"):
     """Plots a metric-confidence curve for model predictions, supporting per-class visualization and smoothing."""
     fig, ax = plt.subplots(1, 1, figsize=(9, 6), tight_layout=True)
