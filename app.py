@@ -9,12 +9,11 @@ import torchvision.transforms as T
 
 from yolov5.models.experimental import attempt_load
 
-# ✅ Define the model path first
+# Define model path and load model
 model_path = 'yolov5/weights/best.pt'
-
-# Load model
 model = attempt_load(model_path, map_location='cpu')
 model.eval()
+
 
 # Streamlit UI
 st.title("🔥 Fire Detection App")
