@@ -1,6 +1,7 @@
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), 'yolov5'))
+
 import streamlit as st
 import torch
 from PIL import Image
@@ -8,9 +9,9 @@ import torchvision.transforms as T
 
 from yolov5.models.experimental import attempt_load
 
-# Load model
-model = attempt_load('yolov5/weights/best.pt', map_location='cpu')
-
+# Load model using absolute path
+model_path = os.path.join(os.path.dirname(__file__), 'yolov5', 'weights', 'best.pt')
+model = attempt_load(model_path, map_location='cpu')
 model.eval()
 
 # Streamlit UI
@@ -26,5 +27,6 @@ if uploaded_file is not None:
 
     with st.spinner("Detecting fire..."):
         results = model(img_tensor)[0]
-        # Dummy placeholder logic (replace with real confidence/label check)
-        st.warning("⚠️ Fire detection results generated. (Add custom logic to check for fire)")
+        
+        # Dummy logic – replace with custom thresholding or class detection
+        st.warning("⚠️ Fire detection results generated. (Add logic to check if fire is actually detected)")
