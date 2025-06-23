@@ -10,6 +10,7 @@ from yolov5.models.experimental import attempt_load
 
 # Load model
 model = attempt_load('yolov5/weights/best.pt', map_location='cpu')
+
 model.eval()
 
 # Streamlit UI
