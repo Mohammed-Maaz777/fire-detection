@@ -1,0 +1,19 @@
+# Ignore model weights and videos
+*.pt
+*.mp4
+*.avi
+*.mov
+
+# Ignore dataset zips and extracted folders
+*.zip
+*.rar
+*.7z
+__pycache__/
+*.log
+runs/
+output_fire.mp4
+venv/
+.DS_Store
+
+# Ignore VSCode settings
+.vscode/
